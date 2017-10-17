@@ -1,11 +1,17 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "main.h"
 
+/*TAKING IN THE FILE TO CHECK FROM COMMAND LINE*/
 int main(int argc, char* argv[])
 {
-    if(commandLineCheck() != 0)
+    SpellConf* spellConf = (SpellConf*)malloc(sizeof(MAXFILELENGTH));
+    spellConf->dictFile = (char*)malloc(sizeof(MAXWORDSIZE));
+
+    if(commandLineCheck(argc) != 0)
     {
-        readFile(argv);
+        readFile(spellConf);
+        readDict(spellConf);
     }
     else
     {

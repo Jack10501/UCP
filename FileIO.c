@@ -1,11 +1,10 @@
 #include <stdio.h>
-#include "spellconf.h"
-
-void readFile(char* argv)
+#include <string.h>
+#include <stdlib.h>
+#include "FileIO.h"
+void readFile(SpellConf* spellConf)
 {
-    FILE *settings = fopen(argv[1], "r");
-    Spellconf* spellConf = (Spellconf*)malloc(sizeof(MAXFILELENGTH));
-    spellConf->dictFile = (char*)malloc(sizeof(MAXWORDSIZE));
+    FILE *settings = fopen("spellconf", "r");
     /*The max character size for dictfile, maxdifference & autocorrect
     is 13*/
     char checktype[14];
@@ -14,25 +13,25 @@ void readFile(char* argv)
 
     if(!(settings = NULL))
     {
-        do
+        while(feof(settings) == 0)
         {
             /*USE gets to check which one it is, then skip to value and store*/
             /*Use fgets to avoid buffere overflow*/
             fgets(checktype, 14, settings);
 
-            if(strcmp("dictfile", checktype) = 0)
+            if(strcmp("dictfile", checktype) == 0)
             {
-                fscanf(settings, "= %s", spellConf->dictFile);
+                fscanf(settings, "= %s\n", spellConf->dictFile);
             }
-            else if(strcmp("maxdifference", checktype) = 0)
+            else if(strcmp("maxdifference", checktype) == 0)
             {
-                fscanf(settings, "= %s", maxDif)
-                spellConf->maxdifference = atoi(maxDif);
+                fscanf(settings, "= %s\n", maxDif);
+                spellConf->maxDifference = atoi(maxDif);
             }
-            else if(strcmp("autocorrect", checktype) = 0)
+            else if(strcmp("autocorrect", checktype) == 0)
             {
-                fscanf(settings, "= %s", correct);
-                if(strcmp("false", correct == 0)
+                fscanf(settings, "= %s\n", correct);
+                if(strcmp("false", correct) == 0)
                 {
                     spellConf->autoCorrect = 0;
                 }
@@ -45,11 +44,16 @@ void readFile(char* argv)
             {
                 /*INVALID ARGUMENT THROW ERROR*/
             }
-        } while(fgetc(settings) != NULL);
+        }
     }
     else
     {
         perror("Error Openning from Files");
     }
     fclose(settings);
+}
+
+void readDict(SpellConf* spellConf)
+{
+
 }

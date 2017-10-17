@@ -3,7 +3,7 @@ typedef struct
     char* dictFile;
     int  maxDifference;
     int autoCorrect;
-} Spellconf
+} SpellConf;
 
 #ifndef MAXFILELENGTH
 #define MAXFILELENGTH 255
