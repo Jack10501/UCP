@@ -7,11 +7,13 @@ int main(int argc, char* argv[])
 {
     SpellConf* spellConf = (SpellConf*)malloc(sizeof(MAXFILELENGTH));
     spellConf->dictFile = (char*)malloc(sizeof(MAXWORDSIZE));
+    LinkedList* list = construct();
 
     if(commandLineCheck(argc) != 0)
     {
         readFile(spellConf);
-        readDict(spellConf);
+        readDict(spellConf->dictFile, list);
+
     }
     else
     {
