@@ -8,10 +8,10 @@ void readFile(SpellConf* spellConf)
     /*The max character size for dictfile, maxdifference & autocorrect
     is 13*/
     char checktype[14];
-    char maxDif[2];
-    char correct[6];
+    char maxDif[3];
+    char correct[7];
 
-    if(!(settings = NULL))
+    if(settings != NULL)
     {
         while(feof(settings) == 0)
         {
@@ -48,12 +48,36 @@ void readFile(SpellConf* spellConf)
     }
     else
     {
-        perror("Error Openning from Files");
+        perror("Error openning settings file");
     }
     fclose(settings);
 }
 
-void readDict(SpellConf* spellConf)
+void readDict(char* dictFile, LinkedList* list)
+{
+    FILE *file = fopen(dictFile, "r");
+    char* word; /*Malloc?*/
+    char** wordArray
+
+    if(file != NULL)
+    {
+        while(feof(file) == 0)
+        {
+            /*Read the line into word*/
+            insertFirst(list, word);
+        }
+
+
+        /*malloc to list->size*/
+        /*insert into array*/
+    }
+    else
+    {
+        perror("Error iopenning dictionary file");
+    }
+}
+
+void readUser()
 {
 
 }
