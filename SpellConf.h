@@ -1,3 +1,12 @@
+/**
+ * SpellConf.h
+ * Author: Jack Paull
+ * Purpose: The config struct
+ */
+#ifndef SPELLCONF_H
+#define SPELLCONF_H
+
+ /*Struct to store config settings*/
 typedef struct
 {
     char* dictFile;
@@ -5,14 +14,14 @@ typedef struct
     int autoCorrect;
 } SpellConf;
 
+/*Based off the max file length in Linux OS: Ubuntu*/
 #ifndef MAXFILELENGTH
-#define MAXFILELENGTH 255
+#define MAXFILELENGTH 256
 #endif
 
+/*Based off the largest word in the Oxford dictionary*/
 #ifndef MAXWORDSIZE
-#define MAXWORDSIZE 45
+#define MAXWORDSIZE 46
 #endif
 
-/*ASSUME dictFile max size is 255 as that is the max linux filesize
-ASSUME MAX WORD SIZE IS 45 as it is the longest english word in the
-oxford dictionary*/
+#endif

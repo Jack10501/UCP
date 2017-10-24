@@ -1,7 +1,18 @@
+/**
+ * LinkedList.c
+ * Author: Jack Paull
+ * Purpose: Creates a collects of elements stored in a list
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "LinkedList.h"
 
+/**
+ * construct()
+ * Creates an empty linked list
+ *
+ * returns a new linked list
+ */
 LinkedList* construct()
 {
     LinkedList* list;
@@ -14,6 +25,14 @@ LinkedList* construct()
     return list;
 }
 
+/**
+ * insertFirst()
+ * Inserts an elements to the front of the list
+ * list: The list to be added to
+ * data: The data to be added to the list
+ *
+ * returns void
+ */
 void insertFirst(LinkedList* list, void* data)
 {
     /*Create a new node*/
@@ -23,6 +42,7 @@ void insertFirst(LinkedList* list, void* data)
     /*Point data to the value to be inserted*/
     newNode->data = data;
 
+    /*checks if the list is empty*/
     if(list->head == NULL)
     {
         list->head = newNode;
@@ -38,6 +58,14 @@ void insertFirst(LinkedList* list, void* data)
     list->size++;
 }
 
+/**
+ * insertLast()
+ * Inserts an element at the back of the list
+ * list: The list to insert into
+ * data: The data to added to the list
+ *
+ * returns void
+ */
 void insertLast(LinkedList* list, void* data)
 {
     /*Create a new node*/
@@ -47,6 +75,7 @@ void insertLast(LinkedList* list, void* data)
     /*Point data to the value to be inserted*/
     newNode->data = data;
 
+    /*Checks if the list is empty*/
     if(list->tail == NULL)
     {
         list->head = newNode;
@@ -61,6 +90,13 @@ void insertLast(LinkedList* list, void* data)
     list->size++;
 }
 
+/**
+ * removeFirst()
+ * Removes the first element from the list
+ * list: The list to remove from
+ *
+ * returns the lists new head
+ */
 LinkedListNode* removeFirst(LinkedList* list)
 {
     LinkedListNode* temp;
@@ -85,6 +121,13 @@ LinkedListNode* removeFirst(LinkedList* list)
     return list->head;
 }
 
+/**
+ * removeLast()
+ * Removes the last element from the list
+ * list: The list to remove from
+ *
+ * returns the lists new tail
+ */
 LinkedListNode* removeLast(LinkedList* list)
 {
     LinkedListNode* temp;
@@ -109,11 +152,20 @@ LinkedListNode* removeLast(LinkedList* list)
     return list->tail;
 }
 
+/**
+ * find()
+ * Finds a specific element within the list
+ * list: The list to search
+ * ii: The node to find
+ *
+ *returns to desired node
+ */
 LinkedListNode* find(LinkedList* list, int ii)
 {
     LinkedListNode* currentNode;
     int curr = 0;
 
+/*Checks that the desired node is within the list bounds*/
     if(ii >= list->size || ii <= 0)
     {
         currentNode = NULL;
@@ -127,10 +179,17 @@ LinkedListNode* find(LinkedList* list, int ii)
             curr++;
         }
     }
-
     return currentNode;
 }
 
+/**
+ * print()
+ * Prints out the contents of the list
+ * list: The list to print
+ *
+ * returns void
+ */
+/* UNUSED FOR ASSIGNMENT
 void print(LinkedList* list)
 {
     int ii;
@@ -141,14 +200,28 @@ void print(LinkedList* list)
         printf("Data: %d\n", *((int*)curr->data));
         curr = curr->next;
     }
-}
+}*/
 
+/**
+ * freeLinkedList
+ * Frees the LinkedList
+ * list: The list to be freed
+ *
+ * returns void
+ */
 void freeLinkedList(LinkedList* list)
 {
     freeNode(list->head);
     free(list);
 }
 
+/**
+ * freeNode()
+ * Recursively frees the next node in the list
+ * node: The current node to be freed
+ *
+ * returns void
+ */
 void freeNode(LinkedListNode* node)
 {
     if(node != NULL)

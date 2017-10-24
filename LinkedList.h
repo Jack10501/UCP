@@ -1,3 +1,12 @@
+/**
+ * LinkedList.h
+ * Author: Jack Paull
+ * Purpose:Defines structs
+ */
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
+
+/*Defines a node in a list*/
 typedef struct LinkedListNode
 {
     void* data;
@@ -5,6 +14,7 @@ typedef struct LinkedListNode
     struct LinkedListNode* prev;
 } LinkedListNode;
 
+/*Defines a LinkedList*/
 typedef struct
 {
     LinkedListNode* head;
@@ -22,3 +32,4 @@ LinkedListNode* find(LinkedList*, int);
 void print(LinkedList*);
 void freeLinkedList(LinkedList*);
 void freeNode(LinkedListNode*);
+#endif
