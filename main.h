@@ -1,18 +1,11 @@
 /**
  * main.h
  * Author: Jack Paull
- * Purpose: Defines max file length
+ * Purpose: Includes other header files needed
+            to run the program
  */
 #ifndef MAIN_H
 #define MAIN_H
-
-/*#ifndef CHECK_H
-#include "check.h"
-#endif*/
-
-/*#ifndef ERRORCHECK_H
-#include "ErrorChecking.h"
-#endif*/
 
 #ifndef FILEIO_H
 #include "FileIO.h"
@@ -22,8 +15,8 @@
 #include "FuncPointer.h"
 #endif
 
-/*#ifndef SPELLCONF_H
-#include "SpellConf.h"
-#endif*/
+#ifndef FREEMEM_H
+#include "FreeMem.h"
+#endif
 
 #endif

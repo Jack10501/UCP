@@ -16,7 +16,17 @@
  */
 int autoYes(char* word, char* suggestion)
 {
-    return TRUE;
+    int check = TRUE;
+    if(suggestion == NULL)
+    {
+        printf("No solution available for %s\n", word);
+        check = FALSE;
+    }
+    else
+    {
+        check = TRUE;
+    }
+    return check;
 }
 
 /**
@@ -33,15 +43,27 @@ int autoNo(char* word, char* suggestion)
     int choice;
 
     /*Retrieves user input from another file*/
-    choice = userInputCheck(word, suggestion);
-    if(choice == TRUE)
+    if(suggestion == NULL)
     {
-        check = TRUE;
+        printf("No solution available for %s\n", word);
+        check = FALSE;
     }
     else
     {
-        check = FALSE;
+        choice = userInputCheck(word, suggestion);
+        if(choice == 1)
+        {
+            check = TRUE;
+        }
+        else if(suggestion == NULL)
+        {
+        }
+        else
+        {
+            check = FALSE;
+        }
     }
+
 
     return check;
 }
@@ -59,14 +81,23 @@ int autoNo(char* word, char* suggestion)
 ActionFunc actionChoice(int autoCorrect)
 {
     ActionFunc action;
+
+    printf("\nSTARTING ACTION CHOICE\n");
     if(autoCorrect == TRUE)
     {
         action = &autoYes;
     }
-    else
+    else if(autoCorrect == FALSE)
     {
         action = &autoNo;
     }
+    else
+    {
+        printf("Invalid autoCorrect read,"
+               " Defaulting to true\n");
+        action = &autoYes;
+    }
+    printf("-ACTIONFUNC SETUP COMPLETE ...\n");
 
     return action;
 }

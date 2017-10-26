@@ -9,6 +9,12 @@
 #define FALSE 0
 #define TRUE !FALSE
 
+/*Based off the max file length in Linux OS: Ubuntu*/
+#ifndef MAXFILELENGTH
+#define MAXFILELENGTH 256
+#endif
+
+
 int commandLineCheck(int);
 int userInputCheck(char*, char*);
 #endif

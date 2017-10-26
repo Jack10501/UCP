@@ -97,7 +97,7 @@ void insertLast(LinkedList* list, void* data)
  *
  * returns the lists new head
  */
-LinkedListNode* removeFirst(LinkedList* list)
+void removeFirst(LinkedList* list)
 {
     LinkedListNode* temp;
 
@@ -109,16 +109,15 @@ LinkedListNode* removeFirst(LinkedList* list)
     {
         temp = list->head;
         list->head = list->head->next;
-        temp->next = NULL;
-        if(temp == list->head)
+        if(temp->next == NULL)
         {
             list->head = NULL;
             list->tail = NULL;
         }
     }
     list->size--;
+    free(temp->data);
     free(temp);
-    return list->head;
 }
 
 /**
@@ -128,7 +127,7 @@ LinkedListNode* removeFirst(LinkedList* list)
  *
  * returns the lists new tail
  */
-LinkedListNode* removeLast(LinkedList* list)
+void removeLast(LinkedList* list)
 {
     LinkedListNode* temp;
 
@@ -140,16 +139,15 @@ LinkedListNode* removeLast(LinkedList* list)
     {
         temp = list->tail;
         list->tail = list->tail->prev;
-        temp->prev = NULL;
-        if(temp == list->tail)
+        if(temp->prev == NULL)
         {
             list->head = NULL;
             list->tail = NULL;
         }
     }
     list->size--;
-    /*free(temp);*/
-    return list->tail;
+    free(temp->data);
+    free(temp);
 }
 
 /**
@@ -182,25 +180,6 @@ LinkedListNode* find(LinkedList* list, int ii)
     return currentNode;
 }
 
-/**
- * print()
- * Prints out the contents of the list
- * list: The list to print
- *
- * returns void
- */
-/* UNUSED FOR ASSIGNMENT
-void print(LinkedList* list)
-{
-    int ii;
-    LinkedListNode* curr;
-    curr = list->head;
-    for(ii = 0; ii < list->size;ii++)
-    {
-        printf("Data: %d\n", *((int*)curr->data));
-        curr = curr->next;
-    }
-}*/
 
 /**
  * freeLinkedList
@@ -227,6 +206,8 @@ void freeNode(LinkedListNode* node)
     if(node != NULL)
     {
         freeNode(node->next);
+        free(node->data);
         free(node);
+        node = NULL;
     }
 }

@@ -26,8 +26,8 @@ typedef struct
 LinkedList* construct(void);
 void insertFirst(LinkedList*, void*);
 void insertLast(LinkedList*, void*);
-LinkedListNode* removeFirst(LinkedList*);
-LinkedListNode* removeLast(LinkedList*);
+void removeFirst(LinkedList*);
+void removeLast(LinkedList*);
 LinkedListNode* find(LinkedList*, int);
 void print(LinkedList*);
 void freeLinkedList(LinkedList*);

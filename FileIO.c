@@ -16,26 +16,31 @@
  *
  * returns: void
  */
-void readFile(SpellConf* spellConf)
+void readFile(SpellConf* spellConf, int* errorCheck)
 {
     FILE *settings = fopen(".spellconf", "r");
     char checktype[14]; /*CREATE CONSTANTS FOR THESE*/
     char maxDif[3];
     char correct[7];
 
+    printf("\nSTARTED READFILE\n");
+
     /*Check if file exists*/
     if(settings != NULL)
     {
+        *errorCheck = FALSE;
         /*while NOT end of file*/
         while(feof(settings) == 0)
         {
             /*Retrieves type for fgets to avoid a buffer overflow*/
             fscanf(settings, "%s", checktype);
-            printf("%s\n", checktype);
+            /*printf("%s\n", checktype);*/
+            /*fflush(stdout);*/
 
             if(strcmp("dictfile", checktype) == 0)
             {
                 fscanf(settings, " = %s\n", spellConf->dictFile);
+
             }
             else if(strcmp("maxdifference", checktype) == 0)
             {
@@ -46,27 +51,34 @@ void readFile(SpellConf* spellConf)
             {
                 fscanf(settings, " = %s\n", correct);
                 /*Changes string "true" or "false" to constants*/
-                if(strcmp("false", correct) == 0)
+                if(strcmp("no", correct) == 0)
                 {
                     spellConf->autoCorrect = FALSE;
                 }
-                else
+                else if(strcmp("yes", correct) == 0)
                 {
                     spellConf->autoCorrect = TRUE;
                 }
+                else
+                {
+                    spellConf->autoCorrect = -1;
+                }
+
             }
             else
             {
                 printf("INVALID/ MISSING FIELD\n");
+                *errorCheck = TRUE;
             }
         }
         fclose(settings);
+        printf("-READFILE COMPLETE ...\n");
     }
     else
     {
         perror("Error openning settings file");
+        *errorCheck = TRUE;
     }
-    fclose(settings);
 }
 
 /**
@@ -80,22 +92,32 @@ void readFile(SpellConf* spellConf)
  *
  * returns: void
  */
-void readDict(char* dictFile, LinkedList* list, char** wordArray, int* arrayLength)
+char** readDict(char* dictFile, int* arrayLength, int* errorCheck)
 {
+    LinkedList* list;
     FILE *file = fopen(dictFile, "r");
     /*Temp char* to store each word*/
-    char* word = (char*)malloc(sizeof(char));
+    char* word;
+    char** wordArray;
+    char tempWord[MAXWORDSIZE];
     int ii;
     /*Traversal node*/
     LinkedListNode* node;
+    /*Creates a new Linked List struct to use*/
+    list = construct();
+
+    printf("\nSTARTING READDICT\n");
 
     /*Check if file exists*/
     if(file != NULL)
     {
+        *errorCheck = FALSE;
         /*While NOT end of file insert each word into the list*/
         while(feof(file) == 0)
         {
-            fscanf(file, "%s\n", word);
+            word = (char*)malloc(MAXWORDSIZE * sizeof(char));
+            fscanf(file, "%s\n", tempWord);
+            strncpy(word, tempWord, MAXWORDSIZE);
             insertFirst(list, word);
         }
         /*Store the length for later use*/
@@ -110,16 +132,24 @@ void readDict(char* dictFile, LinkedList* list, char** wordArray, int* arrayLeng
         node = list->tail;
         for(ii = 0; ii< *arrayLength; ii++)
         {
-            wordArray[ii] = (char*)(node->data);
+            strncpy(wordArray[ii], (char*)(node->data), MAXWORDSIZE);
             node = node->prev;
             removeLast(list);
+
         }
         fclose(file);
+        freeLinkedList(list);
+        list = NULL;
+        printf("-READDICTIONARY COMPLETE ...\n");
+
     }
     else
     {
         perror("Error openning dictionary file");
+        *errorCheck = TRUE;
+        freeLinkedList(list);
     }
+    return wordArray;
 }
 
 /**
@@ -133,22 +163,32 @@ void readDict(char* dictFile, LinkedList* list, char** wordArray, int* arrayLeng
  *
  * returns: void
  */
-void readUser(char* userFile, LinkedList* list, char** wordArray, int* arrayLength)
+char** readUser(char* userFile, int* arrayLength, int* errorCheck)
 {
+    LinkedList* list;
     FILE *file = fopen(userFile, "r");
     /*Temp char* to store each word*/
-    char* word = (char*)malloc(sizeof(char));
+    char* word;
+    char** wordArray;
+    char tempWord[MAXWORDSIZE];
     int ii;
     /*Traversal node*/
     LinkedListNode* node;
+    /*Creates a new Linked List struct to use*/
+    list = construct();
+
+    printf("\nSTARTING READUSER\n");
 
     /*Check if file exists*/
     if(file != NULL)
     {
+        *errorCheck = FALSE;
         /*While NOT end of file insert each word into the list*/
-        while(feof(file) !=EOF)
+        while(feof(file) == 0)
         {
-            fscanf(file, "%s", word);
+            word = (char*)malloc(MAXWORDSIZE * sizeof(char));
+            fscanf(file, "%s\n", tempWord);
+            strncpy(word, tempWord, MAXWORDSIZE);
             insertFirst(list, word);
         }
         /*Store the length for later use*/
@@ -163,16 +203,26 @@ void readUser(char* userFile, LinkedList* list, char** wordArray, int* arrayLeng
         node = list->tail;
         for(ii =0; ii< *arrayLength; ii++)
         {
-            wordArray[ii] = (char*)(node->data);
+            /*Copying so free the list won't break the array*/
+            strncpy(wordArray[ii], (char*)(node->data), MAXWORDSIZE);
             node = node->prev;
             removeLast(list);
         }
         fclose(file);
+        freeLinkedList(list);
+        list = NULL;
+        printf("-READUSER COMPLETE ...\n");
+
     }
     else
     {
-        perror("Error openning dictionary file");
+        perror("Error openning userFile file");
+        *errorCheck = TRUE;
+        freeLinkedList(list);
+
     }
+    return wordArray;
+
 }
 
 /**
@@ -198,9 +248,11 @@ void writeFile(char** array, char* userFile, int* arrayLength)
         }
 
         fclose(f1);
+        printf("\nFinished WRITING TO FILE ...\n");
     }
     else
     {
         perror("Error openning outputFile");
+        fclose(f1);
     }
 }

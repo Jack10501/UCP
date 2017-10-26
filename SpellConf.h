@@ -6,7 +6,10 @@
 #ifndef SPELLCONF_H
 #define SPELLCONF_H
 
- /*Struct to store config settings*/
+ /*Struct to store config settings
+  Stores the reference to the dictionary file, the max difference
+  allowed between words and if autoCorrect is turned on or not.
+  Used by the readFile and readDict to setup for check*/
 typedef struct
 {
     char* dictFile;

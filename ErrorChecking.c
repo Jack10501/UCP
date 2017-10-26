@@ -4,6 +4,8 @@
  * Purpose: Sanity checks user input
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "ErrorChecking.h"
 
 /**
@@ -17,7 +19,7 @@
 int commandLineCheck(int argc)
 {
     int check;
-    if(argc < 2)
+    if(argc != 2)
     {
         check = FALSE;
     }
@@ -39,13 +41,23 @@ int commandLineCheck(int argc)
 int userInputCheck(char* word, char* suggestion)
 {
     int choice;
+    char arrayVal[MAXFILELENGTH];
+    char* check;
     printf("Would you like to change %s to %s\n", word, suggestion);
     printf("1. Yes, 2. No\n");
-    scanf("%d\n", &choice);
-    while(choice != 1 && choice != 0)
+    if(fgets(arrayVal, sizeof(arrayVal), stdin) != NULL)
+    {
+        choice = (int)strtol(arrayVal, &check, 10);
+    }
+    /*Checks if the user entered an int*/
+    while(choice != 1 && choice != 2)
     {
         printf("Please enter a valid choice\n");
-        scanf("%d\n", &choice);
+        if(fgets(arrayVal, sizeof(arrayVal), stdin) != NULL)
+        {
+            choice = (int)strtol(arrayVal, &check, 10);
+        }
     }
+    fflush(stdin);
     return choice;
 }
